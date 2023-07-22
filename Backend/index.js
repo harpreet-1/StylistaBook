@@ -1,25 +1,26 @@
 const express = require("express");
-const cors = require("cors")
-require("dotenv").config()
-const passport = require('passport');
-require('./google-outh'); 
-const port = process.env.PORT
+const cors = require("cors");
+require("dotenv").config();
+const passport = require("passport");
+require("./google-outh");
+const port = process.env.PORT;
 const cookiParser = require("cookie-parser");
 const connectDB = require("./db");
 const app = express();
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 app.use(passport.initialize());
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
 
-const userrouter = require("./Routes/user.router")
+const userrouter = require("./Routes/user.router");
 
-const auth = require("./Middleware/auth")
+const auth = require("./Middleware/auth");
+const userAuth = require("./Middlewares/Auth");
 
 app.use(cookiParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use("/user", userrouter)
+app.use("/user", userrouter);
 
 //server setup here.....//
 

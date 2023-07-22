@@ -1,17 +1,16 @@
-const express = require('express');
+const express = require("express");
 const nodemailer = require("nodemailer");
-const UserModel = require('../Models/user.model');
+const UserModel = require("../Models/user.model");
 const randomstring = require("randomstring");
 const userrouter = express.Router();
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const path = require("path");
 // const passport = require("passport");
 const passport = require("../google-outh");
 
-
 const { BlacklistModel } = require("../Models/blacklist");
 const auth = require("../Middleware/auth");
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 const sendVerificationMail = async (name, email, userId) => {
   try {
@@ -210,7 +209,9 @@ userrouter.post("/change-password", async (req, res) => {
         { new: true }
       );
 
-      res.status(200).send({ success: true, msg: "Password changed successfully" });
+      res
+        .status(200)
+        .send({ success: true, msg: "Password changed successfully" });
     } else {
       res.status(400).send({ success: false, msg: "This link has expired" });
     }
@@ -227,18 +228,25 @@ userrouter.post("/forget-password", async (req, res) => {
     const user = await UserModel.findOne({ email });
 
     if (!user) {
-      return res.status(400).send({ success: false, msg: "This email doesn't exist" });
+      return res
+        .status(400)
+        .send({ success: false, msg: "This email doesn't exist" });
     }
 
     if (!user.isVerified) {
-      return res.status(301).send({ success: false, msg: "Please verify your email" });
+      return res
+        .status(301)
+        .send({ success: false, msg: "Please verify your email" });
     }
 
     const randomString = randomstring.generate();
     await UserModel.updateOne({ email }, { $set: { token: randomString } });
     sendResetPassword(user.name, email, randomString);
 
-    res.status(200).send({ success: true, msg: "Reset password email has been sent to your email" });
+    res.status(200).send({
+      success: true,
+      msg: "Reset password email has been sent to your email",
+    });
   } catch (error) {
     res.status(400).send({ success: false, msg: error.message });
   }
@@ -300,17 +308,12 @@ userrouter.post("/sendlink", async (req, res) => {
     } else {
       res.status(400).send({ msg: "This email doesn't exist" });
     }
-  } catch (error) { }
+  } catch (error) {}
 });
 
 module.exports = userrouter;
 
-
-
-
-
 //some part is working//
-
 
 // const express = require('express')
 // const nodemailer = require("nodemailer")
@@ -326,7 +329,6 @@ module.exports = userrouter;
 // const authmid=require("../Middleware/auth")
 
 // const jwt = require('jsonwebtoken')
-
 
 // const sendVerificationMail = async (name, email, userId) => {
 //   try {
@@ -360,7 +362,7 @@ module.exports = userrouter;
 //   }
 // };
 
-// // 
+// //
 // const sendResetPassword = async (username, email, token) => {
 //   try {
 //     const transporter = nodemailer.createTransport({
@@ -419,7 +421,6 @@ module.exports = userrouter;
 //   }
 // );
 
-
 // // ***********end for google auth**********
 
 // userrouter.post("/register", async (req, res) => {
@@ -447,8 +448,6 @@ module.exports = userrouter;
 //     res.status(400).json({ msg: "Something went wrong" });
 //   }
 // });
-
-
 
 // userrouter.post("/login", async (req, res) => {
 //   try {
@@ -484,7 +483,7 @@ module.exports = userrouter;
 //   }
 // });
 
-// // 
+// //
 // const updatePassword = async (password) => {
 //   try {
 //     const hasPass = await bcrypt.hash(password, 8);
@@ -493,7 +492,6 @@ module.exports = userrouter;
 //     throw new Error("Failed to hash password");
 //   }
 // };
-
 
 // userrouter.post("/reset-password", async (req, res) => {
 //   try {
@@ -515,7 +513,6 @@ module.exports = userrouter;
 // // const dataTodb=UserModel.findByIdAndUpdate(decoded.userId,{password:newPassword})
 // // console.log(dataTodb)
 // // return res.json("password reset done")
-
 
 // // //
 
@@ -582,8 +579,6 @@ module.exports = userrouter;
 //   }
 // });
 
-
-
 // userrouter.get("/verify", async (req, res) => {
 //   try {
 //     const userId = req.query.id;
@@ -609,7 +604,6 @@ module.exports = userrouter;
 //   }
 // });
 
-
 // userrouter.get("/logout", async (req, res) => {
 //   try {
 //     const token = req.headers?.authorization;
@@ -621,8 +615,6 @@ module.exports = userrouter;
 //     res.send(error.message);
 //   }
 // });
-
-
 
 // userrouter.delete("/delete/:id", async (req, res) => {
 //   const { id } = req.params
@@ -644,7 +636,5 @@ module.exports = userrouter;
 //     }
 //   } catch (error) { }
 // });
-
-
 
 // module.exports = userrouter
