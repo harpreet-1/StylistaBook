@@ -1,11 +1,9 @@
 const mongoose = require("mongoose");
 
 const stylistSchema = new mongoose.Schema({
-  userID: {
-    type: String,
-    ref: "user",
-    required: true,
-  },
+  name: String,
+  email: { type: String, unique: true },
+  password: { type: String, unique: true },
   image: String,
   salonName: {
     type: String,
@@ -21,6 +19,11 @@ const stylistSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  otp: {
+    type: String,
+    required: true,
+  },
+  isEmailVerified: { type: Boolean, default: false },
 });
 
 const StylistModel = mongoose.model("Stylist", stylistSchema);
