@@ -110,7 +110,9 @@ userrouter.get(
 userrouter.post("/register", async (req, res) => {
   try {
     const { fname,lname, email, password,userType } = req.body;
+    console.log(body)
     const userExist = await UserModel.findOne({ email });
+    
 
     if (userExist) {
       return res.status(401).send({ msg: "User Already Registered" });
